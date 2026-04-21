@@ -1,0 +1,18 @@
+● xhttp.service - XHTTP Server - oracle.koom.pp.ua
+   Loaded: loaded (/etc/systemd/system/xhttp.service; enabled; vendor preset: enabled)
+   Active: inactive (dead) since Tue 2026-04-21 14:13:47 CST; 1h 44min ago
+  Process: 4315 ExecStart=/usr/bin/python3 /opt/ssh-xhttp/xhttp_server.py (code=killed, signal=TERM)
+ Main PID: 4315 (code=killed, signal=TERM)
+
+Apr 21 14:12:19 psy systemd[1]: Started XHTTP Server - oracle.koom.pp.ua.
+Apr 21 14:13:47 psy systemd[1]: Stopping XHTTP Server - oracle.koom.pp.ua...
+Apr 21 14:13:47 psy systemd[1]: Stopped XHTTP Server - oracle.koom.pp.ua.
+● xhttp.service - XHTTP Server - oracle.koom.pp.ua
+   Loaded: loaded (/etc/systemd/system/xhttp.service; enabled; vendor preset: enabled)
+   Active: inactive (dead) since Tue 2026-04-21 14:13:47 CST; 1h 44min ago
+  Process: 4315 ExecStart=/usr/bin/python3 /opt/ssh-xhttp/xhttp_server.py (code=killed, signal=TERM)
+ Main PID: 4315 (code=killed, signal=TERM)
+
+Apr 21 14:12:19 psy systemd[1]: Started XHTTP Server - oracle.koom.pp.ua.
+Apr 21 14:13:47 psy systemd[1]: Stopping XHTTP Server - oracle.koom.pp.ua...
+Apr 21 14:13:47 psy systemd[1]: Stopped XHTTP Server - oracle.koom.pp.ua.
