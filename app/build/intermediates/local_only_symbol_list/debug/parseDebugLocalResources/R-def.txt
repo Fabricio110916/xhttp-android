@@ -1,0 +1,10 @@
+R_DEF: Internal format may change without notice
+local
+drawable ic_launcher
+id progressBar
+id startButton
+id statusText
+id stopButton
+id terminalScroll
+id terminalText
+layout activity_main
