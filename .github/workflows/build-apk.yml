@@ -25,6 +25,14 @@ jobs:
         api-level: 34
         build-tools: 34.0.0
     
+    - name: Update server IP
+      run: |
+        echo "Atualizando IP do servidor..."
+        find app -name "*.kt" -exec sed -i 's/209.74.85.241/168.138.147.212/g' {} \;
+        find app -name "*.kt" -exec sed -i 's/edge.koom.pp.ua/oracle.koom.pp.ua/g' {} \;
+        echo "IP atualizado!"
+        grep -n "168.138.147.212" app/src/main/java/com/xhttp/tunnel/XHttpVpnService.kt || echo "Verificando..."
+    
     - name: Create local.properties
       run: |
         echo "sdk.dir=$ANDROID_HOME" > local.properties
