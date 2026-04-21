@@ -17,9 +17,6 @@ class XHttpVpnService : VpnService() {
     private var vpnInterface: ParcelFileDescriptor? = null
     private var tlsSocket: SSLSocket? = null
     private var isRunning = false
-    private val uploadBytes = AtomicLong(0)
-    private val downloadBytes = AtomicLong(0)
-    private val packetCount = AtomicLong(0)
     
     companion object {
         private const val NOTIFICATION_ID = 999
@@ -35,7 +32,6 @@ class XHttpVpnService : VpnService() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        startForeground(NOTIFICATION_ID, createNotification("VPN Iniciando..."))
     }
     
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -44,6 +40,7 @@ class XHttpVpnService : VpnService() {
             return START_NOT_STICKY
         }
         if (!isRunning) {
+            startForeground(NOTIFICATION_ID, createNotification("VPN Iniciando..."))
             thread { startVpn() }
         }
         return START_STICKY
@@ -53,54 +50,48 @@ class XHttpVpnService : VpnService() {
         isRunning = true
         
         try {
-            log("[1/5] Conectando TLS...")
+            log("[1/4] Conectando TLS...")
             val sslContext = SSLContext.getInstance("TLS")
             sslContext.init(null, arrayOf(TrustAllCerts()), java.security.SecureRandom())
             val factory = sslContext.socketFactory
             tlsSocket = factory.createSocket("168.138.147.212", 443) as SSLSocket
             tlsSocket?.soTimeout = 30000
             tlsSocket?.startHandshake()
-            log("✅ TLS: ${tlsSocket?.session?.cipherSuite}")
+            log("✅ TLS OK")
             
-            log("[2/5] Enviando POST...")
+            log("[2/4] Enviando POST...")
             val writer = OutputStreamWriter(tlsSocket!!.outputStream)
             writer.write("POST /ssh HTTP/1.1\r\n")
             writer.write("Host: oracle.koom.pp.ua\r\n")
             writer.write("Content-Length: 0\r\n\r\n")
             writer.flush()
             
-            log("   Aguardando resposta...")
             val reader = BufferedReader(InputStreamReader(tlsSocket!!.inputStream))
             var line: String?
-            var status = ""
             while (reader.readLine().also { line = it } != null) {
-                log("   $line")
-                if (line!!.startsWith("HTTP/")) status = line!!
                 if (line!!.isEmpty()) break
             }
+            log("✅ POST OK")
             
-            if (!status.contains("200")) {
-                log("❌ Servidor retornou: $status")
-                throw Exception("HTTP $status")
-            }
-            log("✅ Servidor respondeu 200 OK!")
-            
-            log("[3/5] Criando interface TUN...")
+            log("[3/4] Criando VPN...")
             val builder = Builder()
                 .setSession("XHTTP VPN")
                 .addAddress("10.8.0.2", 32)
                 .addRoute("0.0.0.0", 0)
                 .addDnsServer("8.8.8.8")
-                .addDnsServer("8.8.4.4")
                 .setMtu(1500)
-                .setBlocking(false)
             
             vpnInterface = builder.establish()
-            log("✅ TUN criada!")
             
-            log("[4/5] Encaminhando tráfego...")
+            if (vpnInterface == null) {
+                throw Exception("VPN establish falhou")
+            }
+            log("✅ VPN ATIVA!")
+            log("?? IP: 10.8.0.2")
+            
             updateNotification("VPN Conectada", "Tráfego roteado via XHTTP")
             
+            // Encaminhamento
             val input = FileInputStream(vpnInterface!!.fileDescriptor)
             val output = FileOutputStream(vpnInterface!!.fileDescriptor)
             val tlsIn = tlsSocket!!.inputStream
@@ -114,11 +105,6 @@ class XHttpVpnService : VpnService() {
                     if (len > 0) {
                         tlsOut.write(buffer, 0, len)
                         tlsOut.flush()
-                        uploadBytes.addAndGet(len.toLong())
-                        packetCount.incrementAndGet()
-                        if (packetCount.get() % 50 == 0L) {
-                            log("?? $packetCount pacotes, ↑${uploadBytes.get()} bytes")
-                        }
                     }
                 }
             }
@@ -131,16 +117,12 @@ class XHttpVpnService : VpnService() {
                     if (len > 0) {
                         output.write(buffer, 0, len)
                         output.flush()
-                        downloadBytes.addAndGet(len.toLong())
                     }
                 }
             }
             
-            log("[5/5] VPN ATIVA!")
-            log("?? IP: 10.8.0.2 | DNS: 8.8.8.8")
-            
         } catch (e: Exception) {
-            log("❌ FALHA: ${e.message}")
+            log("❌ Erro: ${e.message}")
             stopVpn()
         }
     }
