@@ -69,18 +69,21 @@ class XHttpVpnService : VpnService() {
             writer.write("Content-Length: 0\r\n\r\n")
             writer.flush()
             
+            log("   Aguardando resposta...")
             val reader = BufferedReader(InputStreamReader(tlsSocket!!.inputStream))
             var line: String?
             var status = ""
             while (reader.readLine().also { line = it } != null) {
+                log("   $line")
                 if (line!!.startsWith("HTTP/")) status = line!!
                 if (line!!.isEmpty()) break
             }
-            log("?? $status")
             
             if (!status.contains("200")) {
-                throw Exception("Servidor retornou $status")
+                log("❌ Servidor retornou: $status")
+                throw Exception("HTTP $status")
             }
+            log("✅ Servidor respondeu 200 OK!")
             
             log("[3/5] Criando interface TUN...")
             val builder = Builder()
