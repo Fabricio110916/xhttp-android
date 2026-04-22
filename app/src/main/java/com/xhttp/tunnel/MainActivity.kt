@@ -50,6 +50,6 @@ class MainActivity : AppCompatActivity() {
             statusText.text = "Parado"
         }
         
-        logText.text = "?? Teste: Apenas Túnel XHTTP (sem VPN)\n?? 168.138.147.212:443\n\n"
+        logText.text = "🚀 Teste: Apenas Túnel XHTTP (sem VPN)\n📍 168.138.147.212:443\n\n"
     }
 }

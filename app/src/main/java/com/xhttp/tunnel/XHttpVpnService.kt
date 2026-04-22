@@ -48,7 +48,7 @@ class XHttpVpnService : Service() {
         
         try {
             log("════════════════════════════════")
-            log("?? TESTE: APENAS TÚNEL XHTTP")
+            log("🚀 TESTE: APENAS TÚNEL XHTTP")
             log("════════════════════════════════")
             
             log("[1/3] Conectando TLS...")
@@ -81,7 +81,7 @@ class XHttpVpnService : Service() {
             }
             log("✅ HTTP 200 OK")
             
-            log("[3/3] ?? TÚNEL XHTTP ESTABELECIDO!")
+            log("[3/3] 🎉 TÚNEL XHTTP ESTABELECIDO!")
             log("")
             log("⏸ AGUARDANDO 60 SEGUNDOS...")
             log("   (sem TUN, sem VPN, apenas túnel)")
@@ -103,12 +103,12 @@ class XHttpVpnService : Service() {
                 log("════════════════════════════════")
                 log("✅ TESTE CONCLUÍDO!")
                 log("════════════════════════════════")
-                log("?? Resultado:")
+                log("📊 Resultado:")
                 log("   ✅ TLS: OK")
                 log("   ✅ POST: 200 OK")
                 log("   ✅ Túnel: ESTÁVEL por 60s")
                 log("")
-                log("?? CONCLUSÃO:")
+                log("🎯 CONCLUSÃO:")
                 log("   O problema é 100% na TUN/VPN!")
                 log("   O túnel XHTTP funciona perfeitamente!")
             }
@@ -121,7 +121,7 @@ class XHttpVpnService : Service() {
     }
     
     private fun stopTunnel() {
-        log("?? Parando túnel...")
+        log("🛑 Parando túnel...")
         isRunning = false
         try { tlsSocket?.close() } catch (e: Exception) {}
         stopForeground(true)
