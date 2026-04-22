@@ -48,7 +48,7 @@ class XHttpVpnService : Service() {
         
         try {
             log("════════════════════════════════")
-            log("🚀 TESTE: APENAS TÚNEL XHTTP")
+            log("?? TESTE: APENAS TÚNEL XHTTP")
             log("════════════════════════════════")
             
             log("[1/3] Conectando TLS...")
@@ -73,7 +73,7 @@ class XHttpVpnService : Service() {
             }
             log("✅ HTTP 200 OK")
             
-            log("[3/3] 🎉 TÚNEL XHTTP ESTABELECIDO!")
+            log("[3/3] ?? TÚNEL XHTTP ESTABELECIDO!")
             log("")
             log("⏸ AGUARDANDO 60 SEGUNDOS...")
             log("   (SEM TUN, SEM VPN - APENAS TÚNEL)")
@@ -95,8 +95,8 @@ class XHttpVpnService : Service() {
                 log("════════════════════════════════")
                 log("✅ TESTE CONCLUÍDO!")
                 log("════════════════════════════════")
-                log("📊 O túnel XHTTP ficou estável por 60s!")
-                log("🎯 Conclusão: O problema é a TUN/VPN!")
+                log("?? O túnel XHTTP ficou estável por 60s!")
+                log("?? Conclusão: O problema é a TUN/VPN!")
             }
             
         } catch (e: Exception) {
