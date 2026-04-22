@@ -77,11 +77,7 @@ class XHttpVpnService : Service() {
             log("")
             log("⏸ AGUARDANDO 60 SEGUNDOS...")
             log("   (SEM TUN, SEM VPN - APENAS TÚNEL)")
-            log("")
             
-            updateNotification("Túnel XHTTP", "Ativo (sem VPN)")
-            
-            // AGUARDAR 60 SEGUNDOS
             for (i in 1..60) {
                 if (!isRunning) break
                 Thread.sleep(1000)
@@ -92,11 +88,7 @@ class XHttpVpnService : Service() {
             
             if (isRunning) {
                 log("")
-                log("════════════════════════════════")
-                log("✅ TESTE CONCLUÍDO!")
-                log("════════════════════════════════")
-                log("?? O túnel XHTTP ficou estável por 60s!")
-                log("?? Conclusão: O problema é a TUN/VPN!")
+                log("✅ TESTE CONCLUÍDO! O túnel funciona!")
             }
             
         } catch (e: Exception) {
@@ -127,16 +119,6 @@ class XHttpVpnService : Service() {
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setOngoing(true)
             .build()
-    }
-    
-    private fun updateNotification(title: String, content: String) {
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(title)
-            .setContentText(content)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setOngoing(true)
-            .build()
-        getSystemService(NotificationManager::class.java).notify(NOTIFICATION_ID, notification)
     }
     
     override fun onDestroy() {
